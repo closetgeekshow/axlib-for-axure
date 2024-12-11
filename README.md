@@ -1,19 +1,22 @@
-# Axure扩展库
-Axure的前端组件库,在RP9.x版本通过测试
+# Axure Extension Library
+Axure's front-end component library has passed the test in RP9.x version
 
-## 提示
-  建议配合 **JsBox** 使用，**JsBox** 是调用了axlib的一个Axure代码编辑器组件版，除了能方便的在Axure中直接编程之外，还可以外联到VSCode中进行开发建议直接跳转到JsBox仓库进行了解：
-  - https://gitee.com/wavef/jsbox （码云）
-  - https://github.com/wavef/jsbox （Github）
+## Fork Description
+I just ran it through Google Translate to translate all the strings, errors and comments into English
 
-## 组件
+## hint
+  It is recommended to use it with **JsBox**. **JsBox** is an Axure code editor component version that calls axlib. In addition to being able to program directly in Axure, it can also be externalized to VSCode for development. It is recommended to jump directly to the JsBox repository for more information:
+  - https://gitee.com/wavef/jsbox (Code Cloud)
+  - https://github.com/wavef/jsbox (Github)
 
-- ## axlib-v3
-  核心库，包含多项实用的axure操作等函数
+## Components
 
-  #### 加载方式
+-##axlib-v3
+  Core library, including many practical Axure operations and other functions
+
+  #### Loading method
   
-    - 在Axure中添加 *“加载时-打开外部链接”* 的交互，然后输入以下代码：
+    - Add an *“On load - Open external link”* interaction in Axure and enter the following code:
 
       ```js
       $axure.utils.loadJS('https://ax.minicg.com/axlib-v3.min.js', ()=>{
@@ -21,32 +24,55 @@ Axure的前端组件库,在RP9.x版本通过测试
       });
       ```
 
-    - 也可以通过添加网络字体的方式加载，代码如下：
+    - You can also add web fonts to load, the code is as follows:
 
       ```html
       "><script src="https://ax.minicg.com/axlib-v3.min.js"></script><link href="
       ```
 
-  #### 功能扩展
+    - If you want to create your own components with `axlib`, and install it using `npm` and compile it locally, you need to import it with the following code:
 
-    - ##### 中继器 - Repeater
+      ```shell
+      // Installation (command line)
+      npm i axlib
+
+      // If you use `jslib` to make your component (command line)
+      git clone https://gitee.com/wavef/jslib YOUR_LIBRARY_FOLDER
+      cd YOUR_LIBRARY_FOLDER
+      pnpm install
+      pnpm add axlib
+      ```
+
+      ```js
+      //Static import
+      import 'axlib';
+      console.log(axlib);
+
+      // Dynamic import
+      import('axlib');
+      console.log(axlib);
+      ```
+  
+  #### Functionality Extension
+
+    - ##### Repeater
      
       ```js
       /*
-       * 获取中继器数据（实时）
+       * Get repeater data (real time)
        * format:
-       * default - 返回最原始的 axure 中继器数据格式
-       * auto - 按照每行获取数据，类型为数组，数组内每个元素都是对象，并标记每列的值
-       * row - 按照每行获取数据，类型为对象，键值为首列每行的值, trim可只获取第1位的值
-       * col - 按照每列获取数据，类型为对象，键值为列名（小写）
-       * tree - 返回树状数据结构，另外配合参数：trim 可移除空值，表头必须命名为C1,C2,C3...
+       * default - returns the original axure repeater data format
+       * auto - Get data according to each row, the type is an array, each element in the array is an object, and the value of each column is marked
+       * row - Get data according to each row. The type is object. The key value is the value of each row in the first column. Trim can only get the value of the first position.
+       * col - Get data by each column, the type is an object, the key value is the column name (lowercase)
+       * tree - returns a tree data structure. In addition, the trim parameter can remove empty values. The headers must be named C1, C2, C3...
        */
 
-      // 获取中继器数据（仅获取初始化时的数据，用axure交互、或用代码操作过的数据都不会被获取到）
-      $axure('@中继器名称').getRepeaterDataOnce({ format: 'row', trim: true });
+      // Get the repeater data (only the data at the time of initialization is obtained, and the data interacted with by Axure or operated by code will not be obtained)
+      $axure('@Repeater name').getRepeaterDataOnce({ format: 'row', trim: true });
 
-      // 插入中继器数据（仅接受axure原始数据格式）
-      $axure('@中继器名称').addRepeaterData(
+      // Insert repeater data (only accept axure raw data format)
+      $axure('@Repeater name').addRepeaterData(
         [
           {
             'col1': { type: 'text', text: 'r1c1' },
@@ -59,52 +85,52 @@ Axure的前端组件库,在RP9.x版本通过测试
         ]
       );
 
-      // 删除n行中继器数据
+      // Delete n lines of repeater data
       let rows = 3;
-      $axure('@中继器名称').deleteRepeaterData(rows);
+      $axure('@Repeater name').deleteRepeaterData(rows);
 
-      // 刷新中继器（插入、更新、删除、清空数据后需要刷新才能获取实时数据）
-      // 会发射一个 REPEATER_UPDATED 的事件，可通过 repeater.$().on('REPEATER_UPDATED', callback) 侦听
-      $axure('@中继器名称').refreshRepeater();
+      // Refresh the repeater (refresh is required to obtain real-time data after inserting, updating, deleting, and clearing data)
+      // A REPEATER_UPDATED event will be emitted, which can be listened to via repeater.$().on('REPEATER_UPDATED', callback)
+      $axure('@Repeater name').refreshRepeater();
 
-      // 覆盖设置中继器数据（仅接受axure原始数据格式）
-      $axure('@中继器名称').setRepeaterData(data);
+      // Override repeater data (only accepts axure raw data format)
+      $axure('@Repeater name').setRepeaterData(data);
 
-      // 清空中继器数据
-      $axure('@中继器名称').clearRepeaterData();
+      // Clear repeater data
+      $axure('@Repeater name').clearRepeaterData();
 
-      // 侦听中继器更新（也支持add、delete等）
-      $axure('@中继器名称').on('REPEATER_DATA_UPDATED', (e, res) => {
+      // Listen for repeater updates (also supports add, delete, etc.)
+      $axure('@Repeater name').on('REPEATER_DATA_UPDATED', (e, res) => {
         console.log(res);
       });
       ```
 
-    - ##### 动态面板 - Dynamic Panel
+    - ##### Dynamic Panel - Dynamic Panel
       ```js
-      // 获取动态面板所有状态
-      $axure('@动态面板名称').getPanelStates();
+      // Get all states of dynamic panels
+      $axure('@dynamic panel name').getPanelStates();
 
-      // 获取动态面板当前状态
-      $axure('@动态面板名称').getCurrentPanelState();
+      // Get the current status of the dynamic panel
+      $axure('@dynamic panel name').getCurrentPanelState();
 
-      // 动态面板跳转到指定名称的状态
+      // The dynamic panel jumps to the state with the specified name
       let name = 'State 1';
-      $axure('@动态面板名称').setPanelStateByName(name);
+      $axure('@dynamic panel name').setPanelStateByName(name);
 
-      // 动态面板跳转到指定索引
-      $axure('@动态面板名称').setPanelStateByIndex(1);
+      // The dynamic panel jumps to the specified index
+      $axure('@dynamic panel name').setPanelStateByIndex(1);
       ```
     
 
-    - ##### 页面跳转
+    - ###### Page jump
       ```js
-      // 注入方法到页面跳转方法（原生交互也可触发）
+      // Inject method into page jump method (native interaction can also be triggered)
       $axure.beforeNav((options,stop)=>{
-        console.log(options); /* 这里其实可以加入转场效果（实测） */
-        stop(true); /* 执行这句会阻断原生跳转 */
+        console.log(options); /* You can actually add transition effects here (actual test) */
+        stop(true); /* Executing this statement will block the native jump*/
       });
 
-      // 手动跳转
+      // Manual jump
       $axure.navigate({
         url: 'page_1.html',
         target: 'frame',
@@ -114,36 +140,36 @@ Axure的前端组件库,在RP9.x版本通过测试
       ```
 
 
-    - ##### 简化获取ID与节点的方法
+    - ##### Simplify the method of obtaining ID and node
       ```js
-      // 返回第一个同名元素的 id
-      $axure('@元素名称').getId();
+      // Return the id of the first element with the same name
+      $axure('@element name').getId();
 
-      // 返回第一个同名元素的DOM节点
-      $axure('@元素名称').getEl();
+      // Returns the first DOM node of the element with the same name
+      $axure('@element name').getEl();
       ```
 
-    - ##### 设置和获取全局变量
+    - ##### Setting and getting global variables
       ```js
-      // 设置全局变量（需要先在 Axure 里添加该全局变量名称才能生效）
+      // Set global variables (you need to add the global variable name in Axure before it can take effect)
       axlib.setGlobalVar('varName', 'value');
 
-      // 获取全局变量的值
+      // Get the value of the global variable
       axlib.getGlobalVar('varName');
       ```
 
-    - ##### 设置鼠标指针样式
+    - ##### Set the mouse pointer style
       ```js
-      // 设置元素的指针样式为手形
-      $axure('@元素名称').buttonMode(true);
+      // Set the element's pointer style to hand
+      $axure('@element name').buttonMode(true);
 
-      // 设置元素不感应任何鼠标事件
-      $axure('@元素名称').ghostMode(true);
+      // Set the element to not sense any mouse events
+      $axure('@element name').ghostMode(true);
       ```
      
-  #### 附加功能
+  #### Additional Features
 
-    - ##### 加载插件
+    - ##### Load plugin
       
       ```js
       const { toast, swal2 } = axlib.plugins;
@@ -153,46 +179,46 @@ Axure的前端组件库,在RP9.x版本通过测试
       });
       ```
 
-    - ##### 改变界面布局
+    - ##### Change interface layout
 
       ```js
       /*
-       * 参数：
-       * 0 ~ 默认布局（保留折叠）
-       * 1 ~ 隐藏顶栏，默认缩放
-       * 2 ~ 隐藏顶栏，按宽度缩放
-       * 3 ~ 隐藏顶栏，按高度缩放
+       * Parameters:
+       * 0 ~ default layout (keep folding)
+       * 1 ~ Hide the top bar, zoom by default
+       * 2 ~ Hide the top bar and scale by width
+       * 3 ~ Hide the top bar and scale by height
        */
       axlib.layout(2);
       ```
 
-    - ##### 在线读取与保存数据（新）
+    - ##### Online reading and saving data (new)
       ```js
-      // 初始化 
-      // 参数：仓库id，可在 https://json.minicg.com 获得
+      // Initialization
+      // Parameter: warehouse id, available at https://json.minicg.com
       // window.jsonbin === axlib.jsonbin
       let bin = new jsonbin('64a6db339d312622a37b3ebc');
 
-      // 读取数据
+      // Read data
       bin.read().then(res=>console.log(res));
 
-      // 更新数据（数据覆盖）
+      // Update data (data overwrite)
       bin.update({foo:'bar'});
 
-      // 创建新仓库（需要先设置 API-KEY）
+      // Create a new warehouse (need to set API-KEY first)
       bin.create();
 
-      // 删除仓库（需要先设置 API-KEY）
+      // Delete the warehouse (API-KEY needs to be set first)
       bin.delete();
 
-      // 设置 API-KEY
+      // Set API-KEY
       bin.apiKey = 'YOUR_API_KEY';
 
-      // 设置 ACCESS-KEY（可单独设置create/delete/read/update权限）
+      // Set ACCESS-KEY (create/delete/read/update permissions can be set separately)
       bin.accessKey = 'YOUR_ACCESS_KEY';
       ```
 
-    - ##### 插入加载动画
+    - ##### Insert loading animation
       ```js
       let container = $axure('@target').$().get(0);
       let show = true;
@@ -207,7 +233,7 @@ Axure的前端组件库,在RP9.x版本通过测试
       axlib.loading(container, show, options);
       ```
 
-    - ##### 只加载一次资源，避免重复加载
+    - ###### Load resources only once to avoid repeated loading
       ```js
       axlib.loadOnce({
         urls: [
@@ -215,34 +241,34 @@ Axure的前端组件库,在RP9.x版本通过测试
           'https://ax.minicg.com/element/index.css',
           'https://ax.minicg.com/element/index.js',
         ],
-        lock: 'Element', // 受变量名命名规则约束(不能数字开头,特殊字符只接受$和_)
+        lock: 'Element', // variable lock id, subject to variable name naming rules (cannot start with a number, special characters only $ and _ are accepted)
         callback: ()=> { console.log(window.Vue) }
       })
       ```
 
 
-    - ##### 获取一个或多个元件
+    - ##### Get one or more components
       ```js
-      // 原生节点（window.getEl === axlib.getEl）
-      const [ sym1, sym2, sym3 ] = getEl('sym1', 'sym2', 'sym3');
+      // Native node (window.getEl === axlib.getEl)
+      const [sym1, sym2, sym3] = getEl('sym1', 'sym2', 'sym3');
       const sym1 = axlib.getEl('sym1');
 
-      // axure 对象
-      const [ sym1, sym2, sym3 ] = $axure.getEl('sym1', 'sym2', 'sym3');
+      // axure object
+      const [sym1, sym2, sym3] = $axure.getEl('sym1', 'sym2', 'sym3');
 
-      // jquery 对象
-      const [ sym1, sym2, sym3 ] = $.getEl('sym1', 'sym2', 'sym3');
+      // jquery object
+      const [sym1, sym2, sym3] = $.getEl('sym1', 'sym2', 'sym3');
       ```
 
-    - ##### 获取单个元件
+    - ##### Get a single component
       ```js
       let sym1 = $axure('@sym1').getEl();
       ```
 
-    - ##### 获取多个元件
+    - ##### Get multiple components
       ```js
       /*
-       * 范例代码等同于：
+       * The example code is equivalent to:
        * let sym1 = $axure('@sym1');
        * let sym2 = $axure('@sym2');
        * let sym3 = $axure('@sym3');
@@ -250,20 +276,20 @@ Axure的前端组件库,在RP9.x版本通过测试
       let { sym1, sym2, sym3 } = axlib.find('sym1', 'sym2', 'sym3');
       ```
 
-    - ##### 获取单个元件id
+    - ##### Get a single component id
       ```js
       let id = $axure('@sym1').getId();
       ```
 
-    - ##### 保存文本文件
+    - ##### Save text file
       ```js
-      // 浏览器会提示下载文件
+      // The browser will prompt you to download the file
       let text = 'Hello Axlib!';
       let fileName = 'hello.txt';
       axlib.saveTextFile(text, fileName);
       ```
 
-    - ##### 动态插入ES Module代码
+    - ###### Dynamically insert ES Module code
       ```js
       axlib.insertJsModule(`
         import { createApp } from 'https://unpkg.com/petite-vue?module';
